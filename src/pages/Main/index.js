@@ -4,7 +4,19 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import api from '../../service/api';
 
-import { Container, Form, Input, SubmitButton } from './styles';
+import { 
+  Container, 
+  Form, 
+  Input, 
+  SubmitButton,
+  List,
+  User,
+  Avatar,
+  Name,
+  Bio,
+  ProfileButton,
+  ProfileButtonText
+} from './styles';
 
 export default function Main() {
   const [users, setUsers] = useState([]);
@@ -50,6 +62,26 @@ export default function Main() {
           />
         </SubmitButton>
       </Form>
+      <List
+        data={users}
+        keyExtractor={user => user.login}
+        renderItem={({ item }) => (
+          <User>
+            <Avatar 
+              source={{ uri: item.avatar }} 
+            />
+            <Name>{item.name}</Name>
+            <Bio>{item.bio}</Bio>
+            <ProfileButton
+              onPress={() => {}}
+            >
+              <ProfileButtonText>
+                Ver perfil
+              </ProfileButtonText>
+            </ProfileButton>
+          </User>
+        )}
+      />
     </Container>
   );
 }
