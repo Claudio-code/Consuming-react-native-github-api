@@ -18,7 +18,7 @@ import {
   ProfileButtonText
 } from './styles';
 
-export default function Main() {
+export default function Main({ navigation }) {
 
   const [users, setUsers] = useState([]);
   const [newUser, setNewUser] = useState(null);
@@ -32,42 +32,44 @@ export default function Main() {
         setUsers(JSON.parse(usersSalved))
       }
       
-      // if (usersSalved !== undefined) {
-      //   setUsers(usersSalved);
-      // }
     }
     getUsers();
   }, []);
   
+  function handleNavigate(item) {
+    navigation.navigate('Users', { user: item });
+  }
+
   async function handleAddUser() {
     try {
       if (!newUser || newUser === null) {
         Alert.alert('Campo vazio', 'Para cadastrar os usuarios preença o campo');
         return;
       }
-      setLoading(true);
-      const response = await api.get(`/users/${newUser}`);
-      
-    if (!response.data.length === 0) {
-      Alert.alert('usario nao encontrado', 'tente novamente');
-      return;
-    }
-    const data = {
-      name: response.data.name,
-      login: response.data.login,
-      bio: response.data.bio,
-      avatar: response.data.avatar_url
-    };
+        setLoading(true);
+        const response = await api.get(`/users/${newUser}`);
+        
+      if (!response.data.length === 0) {
+        Alert.alert('usario nao encontrado', 'tente novamente');
+        return;
+      }
+      const data = {
+        name: response.data.name,
+        login: response.data.login,
+        bio: response.data.bio,
+        avatar: response.data.avatar_url
+      };
 
-    let usersForAdd = users;
+      let usersForAdd = users;
 
-    usersForAdd.push(data);
+      usersForAdd.push(data);
 
-    setUsers(usersForAdd);
-    await AsyncStorage.setItem('usersSalved', JSON.stringify(usersForAdd));
-    setNewUser(null);
-    Keyboard.dismiss();
-    setLoading(false);
+      setUsers(usersForAdd);
+      await AsyncStorage.setItem('usersSalved', JSON.stringify(usersForAdd));
+      setNewUser(null);
+      Keyboard.dismiss();
+      setLoading(false);
+
     } catch (error) {
       console.log(error);
       
@@ -108,7 +110,7 @@ export default function Main() {
             <Name>{item.name}</Name>
             <Bio>{item.bio}</Bio>
             <ProfileButton
-              onPress={() => {}}
+              onPress={() => handleNavigate(item)}
             >
               <ProfileButtonText>
                 Ver perfil

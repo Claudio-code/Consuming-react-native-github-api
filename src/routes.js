@@ -23,7 +23,7 @@ const mainStackNavigation = createStackNavigator({
         screen: Users,
         navigationOptions: ({navigation}) => ({
             headerTitleAlign: 'center',
-            headerTitle: 'Usuarios',
+            headerTitle: navigation.getParam('user').name,
             headerTintColor: '#FFF',
             headerStyle: {
                 backgroundColor: '#009688'
